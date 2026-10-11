@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archimedes Lab</title>
+
+<style>
+body{
+    font-family:sans-serif;
+    text-align:center;
+    background:#f5f7fa;
+    margin:0;
+    padding:15px;
+}
+
+.panel{
+    background:white;
+    max-width:900px;
+    margin:10px auto;
+    padding:12px;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+
+canvas{
+    background:white;
+    border:1px solid #ccc;
+    max-width:100%;
+}
+
+button{
+    font-size:18px;
+    margin:5px;
+    padding:6px 14px;
+}
+
+.info{
+    font-size:20px;
+}
+</style>
+</head>
+<body>
+
+<h1>Archimedes Lab</h1>
+
+<div class="panel">
+
+<button onclick="mode='inner';draw()">
+内接
+</button>
+
+<button onclick="mode='outer';draw()">
+外接
+</button>
+
+</div>
+
+<div class="panel">
+
+<button onclick="n=Math.max(3,n-1);draw()">
+−
+</button>
+
+<span id="nLabel"></span>
+
+<button onclick="n=Math.min(30,n+1);draw()">
+＋
+</button>
+
+</div>
+
+<div class="panel">
+
+回転
+
+<input
+type="range"
+id="rotSlider"
+min="0"
+max="360"
+value="0">
+
+</div>
+
+<div class="panel">
+
+<canvas
+id="cv"
+width="700"
+height="700">
+</canvas>
+
+</div>
+
+<div class="panel info" id="info"></div>
+
+<script>
+
+let mode="inner";
+let n=8;
+
+const canvas=document.getElementById("cv");
+const ctx=canvas.getContext("2d");
+
+const slider=document.getElementById("rotSlider");
+
+slider.addEventListener("input",draw);
+
+function draw(){
+
+const rot=
+Number(slider.value)
+*Math.PI/180;
+
+document.getElementById("nLabel")
+.innerHTML=
+`n=${n}`;
+
+ctx.clearRect(0,0,700,700);
+
+const cx=350;
+const cy=350;
+const R=230;
+
+ctx.strokeStyle="#ddd";
+
+ctx.beginPath();
+ctx.moveTo(0,cy);
+ctx.lineTo(700,cy);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(cx,0);
+ctx.lineTo(cx,700);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(cx,cy,R,0,2*Math.PI);
+ctx.strokeStyle="black";
+ctx.stroke();
+
+const pts=[];
+
+if(mode==="inner"){
+
+for(let i=0;i<n;i++){
+
+const t=
+rot+
+2*Math.PI*i/n
+-
+Math.PI/2;
+
+pts.push({
+
+x:cx+R*Math.cos(t),
+y:cy+R*Math.sin(t)
+
+});
+}
+
+}
+else{
+
+const RR=
+R/Math.cos(Math.PI/n);
+
+for(let i=0;i<n;i++){
+
+const t=
+rot+
+2*Math.PI*i/n
+-
+Math.PI/2;
+
+pts.push({
+
+x:cx+RR*Math.cos(t),
+y:cy+RR*Math.sin(t)
+
+});
+}
+
+}
+
+ctx.beginPath();
+
+ctx.moveTo(
+pts[0].x,
+pts[0].y
+);
+
+for(let i=1;i<n;i++){
+
+ctx.lineTo(
+pts[i].x,
+pts[i].y
+);
+
+}
+
+ctx.closePath();
+
+ctx.lineWidth=2;
+ctx.strokeStyle=
+mode==="inner"
+?"blue"
+:"purple";
+
+ctx.stroke();
+
+ctx.beginPath();
+
+ctx.moveTo(
+pts[0].x,
+pts[0].y
+);
+
+ctx.lineTo(
+pts[1].x,
+pts[1].y
+);
+
+ctx.lineWidth=6;
+ctx.strokeStyle="red";
+ctx.stroke();
+
+let text="";
+
+if(mode==="inner"){
+
+const side=
+Math.sqrt(
+2-2*Math.cos(
+2*Math.PI/n
+)
+);
+
+const lower=
+n*side/2;
+
+text=`
+<h3>内接正${n}角形</h3>
+
+一辺 ≒ ${side.toFixed(5)}
+
+<br><br>
+
+π > ${lower.toFixed(5)}
+
+<br><br>
+
+赤い辺をどう求める？
+`;
+
+}
+else{
+
+const upper=
+n*Math.tan(
+Math.PI/n
+);
+
+text=`
+<h3>外接正${n}角形</h3>
+
+π < ${upper.toFixed(5)}
+
+<br><br>
+
+赤い辺をどう求める？
+
+<br><br>
+
+tan が使えそう？
+`;
+
+}
+
+document.getElementById("info")
+.innerHTML=text;
+
+}
+
+draw();
+
+</script>
+
+</body>
+</html>
