@@ -229,7 +229,35 @@ if(mode==="inner"){
 
 }
     
+if(mode==="outer"){
 
+    const midAngle =
+    rot +
+    (
+      (redIndex+0.5)
+      *
+      2*Math.PI/n
+    );
+
+    const mxUnit =
+    Math.cos(midAngle);
+
+    const myUnit =
+    Math.sin(midAngle);
+
+    if(
+        Math.abs(mxUnit-1)<0.05 &&
+        Math.abs(myUnit)<0.05
+    ){
+
+        finalRot =
+        -(redIndex+0.5)
+        *
+        2*Math.PI/n;
+
+    }
+
+}
     
 for(let i=0;i<n;i++){
 
