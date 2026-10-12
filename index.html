@@ -538,7 +538,8 @@ if(mode==="inner"){
         mission1 =
         "✅ ① 3.05 < π を満たす n を発見！";
 
-    }else{
+    }
+    else{
 
         mission1 =
         "□ ① 3.05 < π を満たす n の値を探せ";
@@ -568,12 +569,31 @@ if(mode==="inner"){
 }
 else{
 
+    const upper =
+    n*Math.tan(
+    Math.PI/n
+    );
+
+    let mission1;
+
+    if(upper < 3.25){
+
+        mission1 =
+        `✅ ① π < 3.25 を満たす n=${n} を発見！`;
+
+    }else{
+
+        mission1 =
+        "□ ① π < 3.25 を満たす n の値を探せ";
+
+    }
+
     document.getElementById("mission")
     .innerHTML=
     `
     <h2>🎯 MISSION（外接）</h2>
 
-    □ ① π < 3.25 を満たす n の値を探せ
+    ${mission1}
 
     <br><br>
 
