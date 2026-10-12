@@ -303,6 +303,39 @@ ctx.lineWidth=2;
 
 ctx.stroke();
 
+/* 単位円の目盛 */
+
+ctx.fillStyle="black";
+ctx.font="18px sans-serif";
+
+/* x軸 */
+
+ctx.fillText(
+    "1",
+    cx + R + 15,
+    cy + 20
+);
+
+ctx.fillText(
+    "-1",
+    cx - R - 35,
+    cy + 20
+);
+
+/* y軸 */
+
+ctx.fillText(
+    "1",
+    cx - 25,
+    cy - R - 10
+);
+
+ctx.fillText(
+    "-1",
+    cx - 30,
+    cy + R + 25
+);
+
 /* 赤い辺 */
 
 ctx.beginPath();
