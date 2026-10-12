@@ -260,16 +260,26 @@ mode==="inner"
 
 ctx.stroke();
 
+let redIndex =
+Math.floor(n/2)-1;
+
+if(redIndex<0){
+    redIndex=0;
+}
+
+let nextIndex =
+(redIndex+1)%n;
+
 ctx.beginPath();
 
 ctx.moveTo(
-pts[0].x,
-pts[0].y
+pts[redIndex].x,
+pts[redIndex].y
 );
 
 ctx.lineTo(
-pts[1].x,
-pts[1].y
+pts[nextIndex].x,
+pts[nextIndex].y
 );
 
 ctx.lineWidth=6;
