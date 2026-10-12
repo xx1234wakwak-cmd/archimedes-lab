@@ -342,72 +342,63 @@ ctx.fill();
 
 /* 注目する三角形 */
 
-if(showCenterAngle){
+*f(show*enterAngle){
 
-    ctx.strokeStyle="orange";
-    ctx.linewidth=4;
+    ctx.strokeStyle=*orange";
+    ctx.lineWidth=4;
 
-    ctx.beginPath();
+   *ctx.beginPath();
 
-   *ctx.moveTo(
-    cx,
-   *cy
+    ctx.moveTo(
+*   cx,
+    cy
     );
 
-    ctx.lineTo(
-    pts[redIndex].x,
-    pts[redIndex].y
-*   );
+*   ctx.lineTo(
+    pts*redIndex].x,
+*   pts[redIndex].y
+    );
 
-    ctx.lineTo(
-    pts[nextIndex].x,
-    pts[nextIndex].y*    );
+*   ctx.lineTo(
+    pts[nextIndex].*,
+    pts[nextIndex].y
+   *);
 
-    ctx.closePath();
+*   ctx.closePath();
 
-   *ctx.stroke();
-
-    /* O */
+    ctx.strok*();
 
     ctx.fillStyle="black";
-   *ctx.font="22px sans-serif";
+  * ctx.font="22px sans-serif";
 
-    ctx.fillText(
-    "O*,
+    *tx.fillText(
+    "O",
     cx+10,
-    cy-10
+ *  cy-10
     );
 
-   */* A */
-
     ctx.fillText(
-    "A"*
-    pts*redIndex].x+10,
-    pts*redIndex].y
-*   );
-
-    /* B */
-
-    ctx.fillText(
-    "B",
-    pts[nextIndex].x+10,
-    pts*nextIndex].y
+*   "A",
+    pts[redIndex].x+10,
+*   pts*redIndex].y
     );
-
-    /* 中心角 */
-
-    ctx.fillStyle="orange";
-
-    ctx.font="24px sans-serif";
 
     ctx*fillText(
-    (360/n).toFixed(0)+"°",
-    cx*25,
+*   "B",
+    pts*nextIndex].x+10,
+    pts[nextIndex*.y
+   *);
+
+    ctx.fillStyle="orange";
+  * ctx.font="24px sans-serif";
+
+    *tx.fillText(
+    (*60/n).toFixed(0)+"°",
+    cx*25*
     cy+30
     );
 
 }
-``*
     
 /* 情報表示 */
 
