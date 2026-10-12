@@ -221,6 +221,8 @@ if(mode==="inner"){
     const by =
     Math.sin(bAngle);
 
+    /* 強吸着 */
+
     if(
         Math.abs(bx-1)<0.10 &&
         Math.abs(by)<0.10
@@ -231,8 +233,29 @@ if(mode==="inner"){
 
     }
 
-}
+    /* 弱吸着 */
 
+    const midAngle =
+    rot +
+    (redIndex+0.5)
+    *
+    2*Math.PI/n;
+
+    const myUnit =
+    Math.sin(midAngle);
+
+    if(
+        Math.abs(myUnit)<0.04
+    ){
+
+        finalRot =
+        -(redIndex+0.5)
+        *
+        2*Math.PI/n;
+
+    }
+
+}
 if(mode==="outer"){
 
     document.getElementById("outerButtons")
