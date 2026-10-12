@@ -109,49 +109,59 @@ slider.addEventListener("input",draw);
 
 function draw(){
 
-const rawRot=
+const rawRot =
 Number(slider.value)
-*Math.PI/180;
+* Math.PI/180;
 
-let rot=rawRot;
+let rot = rawRot;
+
+/* 内接スナップ */
 
 if(mode==="inner"){
 
-    const target=
-    Math.PI/2-Math.PI/n;
+    const target =
+    Math.PI / n;
 
-    let diff=rot-target;
+    let diff =
+    rot - target;
 
-    while(diff>Math.PI) diff-=2*Math.PI;
-    while(diff<-Math.PI) diff+=2*Math.PI;
+    while(diff > Math.PI)
+        diff -= 2*Math.PI;
 
-    if(Math.abs(diff)<0.4){
+    while(diff < -Math.PI)
+        diff += 2*Math.PI;
 
-    rot = target;
+    if(Math.abs(diff) < 0.4){
 
-}
-
-}
-else{
-
-    const target=
-    Math.PI/n;
-
-    let diff=rot-target;
-
-    while(diff>Math.PI) diff-=2*Math.PI;
-    while(diff<-Math.PI) diff+=2*Math.PI;
-
-    if(Math.abs(diff)<0.2){
-
-        rot=
-        rot*0.7+
-        target*0.3;
+        rot = target;
 
     }
 
 }
 
+/* 外接スナップ */
+
+if(mode==="outer"){
+
+    const target =
+    Math.PI / n;
+
+    let diff =
+    rot - target;
+
+    while(diff > Math.PI)
+        diff -= 2*Math.PI;
+
+    while(diff < -Math.PI)
+        diff += 2*Math.PI;
+
+    if(Math.abs(diff) < 0.4){
+
+        rot = target;
+
+    }
+
+}
 
 document.getElementById("nLabel")
 .innerHTML=
