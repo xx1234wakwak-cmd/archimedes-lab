@@ -63,7 +63,14 @@ draw();
 ">
 三角形を見る
 </button>
-    
+
+<button onclick="
+showCenterAngle=!showCenterAngle;
+draw();
+">
+中心角を見る
+</button>
+
 </div>
 
 <div class="panel">
@@ -111,7 +118,8 @@ height="700">
 let mode="inner";
 let n=8;
 let showTriangles=false;
-    
+let showCenterAngle=false;
+
 const canvas=
 document.getElementById("cv");
 
@@ -332,6 +340,75 @@ ctx.arc(mx,my,5,0,2*Math.PI);
 ctx.fillStyle="red";
 ctx.fill();
 
+/* 注目する三角形 */
+
+if(showCenterAngle){
+
+    ctx*strokeStyle="orange";
+    ctx.line*idth=4;
+
+    ctx.beginPath();
+
+   *ctx.moveTo(
+    cx,
+   *cy
+    );
+
+    ctx.lineTo(
+    pts*redIndex].x,
+    pts*redIndex].y
+*   );
+
+    ctx.lineTo(
+    pts*nextIndex].x,
+    pts[nextIndex].y*    );
+
+    ctx.closePath();
+
+   *ctx.stroke();
+
+    /* O */
+
+    ctx.fillStyle="black";
+   *ctx.font="22px sans-serif";
+
+    c*x.fillText(
+    "O*,
+    cx+10,
+    cy-10
+    );
+
+   */* A */
+
+    ctx.fillText(
+    "A"*
+    pts*redIndex].x+10,
+    pts*redIndex].y
+*   );
+
+    /* B */
+
+    ctx.fillText(
+    "B",
+    *ts[nextIndex].x+10,
+    pts*nextIndex].y
+    );
+
+    /* 中心角 */
+
+    ctx*fillStyle="orange";
+
+    ctx.font=*24px sans-serif";
+
+    ctx*fillText(
+    (360/n).toFixed(0)+"*",
+    cx*25,
+    cy+30
+    );
+
+}
+``*
+    
 /* 情報表示 */
 
 let text="";
