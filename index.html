@@ -70,7 +70,20 @@ button{
 
 </div>
 
-div class="panel">
+<div class="panel">
+
+回転
+
+<input
+type="range"
+id="rotSlider"
+min="0"
+max="360"
+value="0">
+
+</div>
+
+<div class="panel">
 
 <canvas
 id="cv"
@@ -87,73 +100,18 @@ height="700">
 let mode="inner";
 let n=8;
 
-let angle=0;
-let dragging=false;
-let lastPointerAngle=0;
-
 const canvas=document.getElementById("cv");
 const ctx=canvas.getContext("2d");
 
-canvas.addEventListener("pointerdown",(e)=>{
+const slider=document.getElementById("rotSlider");
 
-    dragging=true;
-
-    const rect=
-    canvas.getBoundingClientRect();
-
-    const x=
-    e.clientX-rect.left-350;
-
-    const y=
-    e.clientY-rect.top-350;
-
-    lastPointerAngle=
-    Math.atan2(y,x);
-
-});
-
-canvas.addEventListener("pointerup",()=>{
-
-    dragging=false;
-
-});
-
-canvas.addEventListener("pointerleave",()=>{
-
-    dragging=false;
-
-});
-
-canvas.addEventListener("pointermove",(e)=>{
-
-    if(!dragging) return;
-
-    const rect=
-    canvas.getBoundingClientRect();
-
-    const x=
-    e.clientX-rect.left-350;
-
-    const y=
-    e.clientY-rect.top-350;
-
-    const currentAngle=
-    Math.atan2(y,x);
-
-    angle +=
-    currentAngle-lastPointerAngle;
-
-    lastPointerAngle=
-    currentAngle;
-
-    draw();
-
-});
-
+slider.addEventListener("input",draw);
 
 function draw(){
 
-const rot=angle;
+const rot=
+Number(slider.value)
+*Math.PI/180;
 
 document.getElementById("nLabel")
 .innerHTML=
