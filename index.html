@@ -344,8 +344,8 @@ ctx.fill();
 
 if(showCenterAngle){
 
-    ctx*strokeStyle="orange";
-    ctx.line*idth=4;
+    ctx.strokeStyle="orange";
+    ctx.linewidth=4;
 
     ctx.beginPath();
 
@@ -355,12 +355,12 @@ if(showCenterAngle){
     );
 
     ctx.lineTo(
-    pts*redIndex].x,
-    pts*redIndex].y
+    pts[redIndex].x,
+    pts[redIndex].y
 *   );
 
     ctx.lineTo(
-    pts*nextIndex].x,
+    pts[nextIndex].x,
     pts[nextIndex].y*    );
 
     ctx.closePath();
@@ -372,7 +372,7 @@ if(showCenterAngle){
     ctx.fillStyle="black";
    *ctx.font="22px sans-serif";
 
-    c*x.fillText(
+    ctx.fillText(
     "O*,
     cx+10,
     cy-10
@@ -390,18 +390,18 @@ if(showCenterAngle){
 
     ctx.fillText(
     "B",
-    *ts[nextIndex].x+10,
+    pts[nextIndex].x+10,
     pts*nextIndex].y
     );
 
     /* 中心角 */
 
-    ctx*fillStyle="orange";
+    ctx.fillStyle="orange";
 
-    ctx.font=*24px sans-serif";
+    ctx.font="24px sans-serif";
 
     ctx*fillText(
-    (360/n).toFixed(0)+"*",
+    (360/n).toFixed(0)+"°",
     cx*25,
     cy+30
     );
