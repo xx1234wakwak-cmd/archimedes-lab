@@ -519,6 +519,19 @@ tan が使えそう？
 /***** ミッション表示 *****/
 
 if(mode==="inner"){
+     let mission1;
+
+    if(lower > 3.05){
+
+        mission1 =
+        "✅ ① 3.05 < π を満たす n を発見！";
+
+    }else{
+
+        mission1 =
+        "□ ① 3.05 < π を満たす n の値を探せ";
+
+    }
 
     document.getElementById("mission")
     .innerHTML=
