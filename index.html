@@ -260,15 +260,8 @@ mode==="inner"
 
 ctx.stroke();
 
-let redIndex =
-Math.floor(n/2)-1;
-
-if(redIndex<0){
-    redIndex=0;
-}
-
-let nextIndex =
-(redIndex+1)%n;
+let redIndex = 0;
+let nextIndex = 1;
 
 ctx.beginPath();
 
