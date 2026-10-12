@@ -342,60 +342,59 @@ ctx.fill();
 
 /* 注目する三角形 */
 
-*f(show*enterAngle){
+if(showCenterAngle){
 
-    ctx.strokeStyle=*orange";
+    ctx.strokeStyle="orange";
     ctx.lineWidth=4;
 
-   *ctx.beginPath();
+    ctx.beginPath();
 
     ctx.moveTo(
-*   cx,
-    cy
+        cx,
+        cy
     );
 
-*   ctx.lineTo(
-    pts*redIndex].x,
-*   pts[redIndex].y
+    ctx.lineTo(
+        pts[redIndex].x,
+        pts[redIndex].y
     );
 
-*   ctx.lineTo(
-    pts[nextIndex].*,
-    pts[nextIndex].y
-   *);
+    ctx.lineTo(
+        pts[nextIndex].x,
+        pts[nextIndex].y
+    );
 
-*   ctx.closePath();
-
-    ctx.strok*();
+    ctx.closePath();
+    ctx.stroke();
 
     ctx.fillStyle="black";
-  * ctx.font="22px sans-serif";
+    ctx.font="22px sans-serif";
 
-    *tx.fillText(
-    "O",
-    cx+10,
- *  cy-10
+    ctx.fillText(
+        "O",
+        cx+10,
+        cy-10
     );
 
     ctx.fillText(
-*   "A",
-    pts[redIndex].x+10,
-*   pts*redIndex].y
+        "A",
+        pts[redIndex].x+10,
+        pts[redIndex].y
     );
 
-    ctx*fillText(
-*   "B",
-    pts*nextIndex].x+10,
-    pts[nextIndex*.y
-   *);
+    ctx.fillText(
+        "B",
+        pts[nextIndex].x+10,
+        pts[nextIndex].y
+    );
 
     ctx.fillStyle="orange";
-  * ctx.font="24px sans-serif";
+    ctx.font="24px sans-serif";
 
-    *tx.fillText(
-    (*60/n).toFixed(0)+"°",
-    cx*25*
-    cy+30
+    ctx.fillText(
+        (360/n).toFixed(0)+"°",
+        cx+25,
+        cy+30
     );
 
 }
