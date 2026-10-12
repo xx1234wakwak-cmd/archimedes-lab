@@ -664,7 +664,7 @@ if(mode==="inner"){
     );
 
     ctx.fillText(
-        `π > ${lower.toFixed(5)}`,
+        `${lower.toFixed(5)} < π` ,
         20,
         60
     );
@@ -708,71 +708,6 @@ else{
         20,
         85
     );
-
-}
-    
-/* 情報表示 */
-
-let text="";
-
-if(mode==="inner"){
-
-    const side =
-    Math.sqrt(
-    2-
-    2*Math.cos(
-    2*Math.PI/n
-    )
-    );
-
-    const lower =
-    n*side/2;
-
-    text=
-`
-<h3>内接正${n}角形</h3>
-
-一辺 ≒ ${side.toFixed(5)}
-
-<br><br>
-
-π > ${lower.toFixed(5)}
-
-<br><br>
-
-赤い辺の中点は常に最下部
-
-<br><br>
-
-OA=OB=1 を使うと？
-`;
-
-}
-else{
-
-    const upper =
-    n*Math.tan(
-    Math.PI/n
-    );
-
-    text=
-`
-<h3>外接正${n}角形</h3>
-
-π < ${upper.toFixed(5)}
-
-<br><br>
-
-赤い辺の中点は常に最下部
-
-<br><br>
-
-垂線を下ろすと？
-
-<br><br>
-
-tan が使えそう？
-`;
 
 }
 
