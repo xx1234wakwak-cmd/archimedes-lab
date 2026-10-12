@@ -506,6 +506,70 @@ ctx.fillText(
 
 }
     
+/* 図の中に情報表示 */
+
+ctx.fillStyle="rgba(255,255,255,0.85)";
+ctx.fillRect(10,10,260,95);
+
+ctx.strokeStyle="#ccc";
+ctx.strokeRect(10,10,260,95);
+
+ctx.fillStyle="black";
+ctx.font="18px sans-serif";
+
+if(mode==="inner"){
+
+    const side =
+    Math.sqrt(
+    2-
+    2*Math.cos(
+    2*Math.PI/n
+    )
+    );
+
+    const lower =
+    n*side/2;
+
+    ctx.fillText(
+        `内接正${n}角形`,
+        20,
+        35
+    );
+
+    ctx.fillText(
+        `π > ${lower.toFixed(5)}`,
+        20,
+        60
+    );
+
+    ctx.fillText(
+        `一辺 ≒ ${side.toFixed(5)}`,
+        20,
+        85
+    );
+
+}
+else{
+
+    const upper =
+    n*Math.tan(
+    Math.PI/n
+    );
+
+    ctx.fillText(
+        `外接正${n}角形`,
+        20,
+        35
+    );
+
+    ctx.fillText(
+        `π < ${upper.toFixed(5)}`,
+        20,
+        60
+    );
+
+}
+    
 /* 情報表示 */
 
 let text="";
