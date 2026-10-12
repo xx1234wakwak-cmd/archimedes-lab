@@ -82,6 +82,8 @@ draw();
 中心角を見る
 </button>
 
+<div id="outerButtons"></div>
+
 </div>
 
 <div class="panel">
@@ -118,6 +120,9 @@ let mode="inner";
 let n=3;
 let showTriangles=false;
 let showCenterAngle=false;
+
+let showH=false;
+let showTan=false;
 
 const canvas=
 document.getElementById("cv");
@@ -227,6 +232,43 @@ if(mode==="inner"){
     }
 
 }
+
+if(mode==="outer"){
+
+    document.getElementById("outerButtons")
+    .innerHTML=
+    `
+    <button onclick="
+    showH=!showH;
+    draw();
+    ">
+    Hを見る
+    </button>
+
+    ${
+        showH
+        ?
+        `
+        <button onclick="
+        showTan=!showTan;
+        draw();
+        ">
+        AHの長さは？
+        </button>
+        `
+        :
+        ""
+    }
+    `;
+
+}
+else{
+
+    document.getElementById("outerButtons")
+    .innerHTML="";
+
+}
+``    
     
 if(mode==="outer"){
 
@@ -422,6 +464,48 @@ pts[redIndex].y+
 pts[nextIndex].y
 )/2;
 
+if(
+    mode==="outer" &&
+    showH
+){
+
+    ctx.fillStyle="green";
+
+    ctx.beginPath();
+    ctx.arc(mx,my,6,0,2*Math.PI);
+    ctx.fill();
+
+    ctx.font="22px sans-serif";
+
+    ctx.fillText(
+        "H",
+        mx+10,
+        my
+    );
+
+}
+if(
+    mode==="outer" &&
+    showTan
+){
+
+    const tx =
+    (pts[redIndex].x + mx)/2;
+
+    const ty =
+    (pts[redIndex].y + my)/2;
+
+    ctx.fillStyle="green";
+    ctx.font="24px sans-serif";
+
+    ctx.fillText(
+        "tanθ",
+        tx,
+        ty
+    );
+
+}
+    
 ctx.beginPath();
 ctx.arc(mx,my,5,0,2*Math.PI);
 ctx.fillStyle="red";
