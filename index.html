@@ -560,6 +560,27 @@ if(showCenterAngle){
 
     ctx.closePath();
     ctx.stroke();
+    /* 中心角の円弧 */
+
+ctx.beginPath();
+
+ctx.arc(
+    cx,
+    cy,
+    35,
+    Math.atan2(
+        pts[redIndex].y-cy,
+        pts[redIndex].x-cx
+    ),
+    Math.atan2(
+        pts[nextIndex].y-cy,
+        pts[nextIndex].x-cx
+    )
+);
+
+ctx.strokeStyle="orange";
+ctx.lineWidth=3;
+ctx.stroke();
 
     ctx.fillStyle="black";
     ctx.font="22px sans-serif";
