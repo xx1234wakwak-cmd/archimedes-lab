@@ -391,11 +391,30 @@ if(showCenterAngle){
     ctx.fillStyle="orange";
     ctx.font="24px sans-serif";
 
-    ctx.fillText(
-        (360/n).toFixed(0)+"°",
-        cx+25,
-        cy+30
-    );
+    const ax = pts[redIndex].x;
+const ay = pts[redIndex].y;
+
+const bx = pts[nextIndex].x;
+const by = pts[nextIndex].y;
+
+/* OAとOBの間の方向 */
+
+const midDir =
+Math.atan2(
+    (ay-cy)+(by-cy),
+    (ax-cx)+(bx-cx)
+);
+
+const angleTextRadius = 45;
+
+ctx.fillText(
+    (360/n).toFixed(0)+"°",
+    cx +
+    angleTextRadius*Math.cos(midDir),
+
+    cy +
+    angleTextRadius*Math.sin(midDir)
+);
 
 }
     
