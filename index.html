@@ -125,13 +125,11 @@ if(mode==="inner"){
     while(diff>Math.PI) diff-=2*Math.PI;
     while(diff<-Math.PI) diff+=2*Math.PI;
 
-    if(Math.abs(diff)<0.2){
+    if(Math.abs(diff)<0.4){
 
-        rot=
-        rot*0.7+
-        target*0.3;
+    rot = target;
 
-    }
+}
 
 }
 else{
