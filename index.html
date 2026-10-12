@@ -242,24 +242,28 @@ if(mode==="inner"){
     /* 弱吸着 */
 
     const midAngle =
-    rot +
-    (redIndex+0.5)
+rot +
+(redIndex+0.5)
+*
+2*Math.PI/n;
+
+const mxUnit =
+Math.cos(midAngle);
+
+const myUnit =
+Math.sin(midAngle);
+
+if(
+    mxUnit > 0 &&
+    Math.abs(myUnit)<0.07
+){
+
+    finalRot =
+    -(redIndex+0.5)
     *
     2*Math.PI/n;
 
-    const myUnit =
-    Math.sin(midAngle);
-
-    if(
-        Math.abs(myUnit)<0.07
-    ){
-
-        finalRot =
-        -(redIndex+0.5)
-        *
-        2*Math.PI/n;
-
-    }
+}
 
 }
 if(mode==="outer"){
