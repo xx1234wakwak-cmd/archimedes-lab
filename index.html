@@ -6,6 +6,7 @@
 <title>Archimedes Lab</title>
 
 <style>
+
 body{
     font-family:sans-serif;
     text-align:center;
@@ -31,14 +32,16 @@ canvas{
 
 button{
     font-size:18px;
-    margin:5px
+    margin:5px;
     padding:6px 14px;
 }
 
 .info{
     font-size:20px;
 }
+
 </style>
+
 </head>
 <body>
 
@@ -59,7 +62,7 @@ button{
 <div class="panel">
 
 <button onclick="n=Math.max(3,n-1);draw()">
-−
+－
 </button>
 
 <span id="nLabel"></span>
@@ -77,9 +80,10 @@ button{
 <input
 type="range"
 id="rotSlider"
-min="0"
-max="360"
-value="0">
+min="-180"
+max="180"
+value="0"
+style="width:300px">
 
 </div>
 
@@ -100,68 +104,18 @@ height="700">
 let mode="inner";
 let n=8;
 
-const canvas=document.getElementById("cv");
-const ctx=canvas.getContext("2d");
+const canvas=
+document.getElementById("cv");
 
-const slider=document.getElementById("rotSlider");
+const ctx=
+canvas.getContext("2d");
+
+const slider=
+document.getElementById("rotSlider");
 
 slider.addEventListener("input",draw);
 
 function draw(){
-
-const rawRot =
-Number(slider.value)
-* Math.PI/180;
-
-let rot = rawRot;
-
-/* 内接スナップ */
-
-if(mode==="inner"){
-
-    const target =
-    Math.PI / n;
-
-    let diff =
-    rot - target;
-
-    while(diff > Math.PI)
-        diff -= 2*Math.PI;
-
-    while(diff < -Math.PI)
-        diff += 2*Math.PI;
-
-    if(Math.abs(diff) < 0.4){
-
-        rot = target;
-
-    }
-
-}
-
-/* 外接スナップ */
-
-if(mode==="outer"){
-
-    const target =
-    Math.PI/(2*n);
-
-    let diff =
-    rot - target;
-
-    while(diff > Math.PI)
-        diff -= 2*Math.PI;
-
-    while(diff < -Math.PI)
-        diff += 2*Math.PI;
-
-    if(Math.abs(diff) < 0.4){
-
-        rot = target;
-
-    }
-
-}
 
 document.getElementById("nLabel")
 .innerHTML=
@@ -188,51 +142,73 @@ ctx.stroke();
 ctx.beginPath();
 ctx.arc(cx,cy,R,0,2*Math.PI);
 ctx.strokeStyle="black";
+ctx.lineWidth=2;
 ctx.stroke();
+
+/* 赤い辺 */
+
+const redIndex =
+Math.floor(n/2)-1;
+
+const nextIndex =
+(redIndex+1)%n;
+
+/* 赤い辺の中点を真下にする基本角 */
+
+const edgeMidAngle =
+(redIndex+0.5)
+*
+(2*Math.PI/n);
+
+const baseRot =
+Math.PI/2
+-
+edgeMidAngle;
+
+const userRot =
+Number(slider.value)
+*
+Math.PI/180;
+
+const rot =
+baseRot+userRot;
 
 const pts=[];
 
+let drawR;
+
 if(mode==="inner"){
 
-for(let i=0;i<n;i++){
+    drawR = R;
 
-const t=
-rot+
-2*Math.PI*i/n
--
-Math.PI/2;
+}else{
 
-pts.push({
-
-x:cx+R*Math.cos(t),
-y:cy+R*Math.sin(t)
-
-});
-}
+    drawR =
+    R/Math.cos(Math.PI/n);
 
 }
-else{
-
-const RR=
-R/Math.cos(Math.PI/n);
 
 for(let i=0;i<n;i++){
 
-const t=
-rot+
-2*Math.PI*i/n
--
-Math.PI/2;
+    const t =
+    rot +
+    2*Math.PI*i/n;
 
-pts.push({
+    pts.push({
 
-x:cx+RR*Math.cos(t),
-y:cy+RR*Math.sin(t)
+        x:
+        cx+
+        drawR*Math.cos(t),
 
-});
+        y:
+        cy+
+        drawR*Math.sin(t)
+
+    });
+
 }
 
-}
+/* 多角形 */
 
 ctx.beginPath();
 
@@ -243,25 +219,27 @@ pts[0].y
 
 for(let i=1;i<n;i++){
 
-ctx.lineTo(
-pts[i].x,
-pts[i].y
-);
+    ctx.lineTo(
+    pts[i].x,
+    pts[i].y
+    );
 
 }
 
 ctx.closePath();
 
-ctx.lineWidth=2;
 ctx.strokeStyle=
 mode==="inner"
-?"blue"
-:"purple";
+?
+"blue"
+:
+"purple";
+
+ctx.lineWidth=2;
 
 ctx.stroke();
 
-let redIndex = 0;
-let nextIndex = 1;
+/* 赤い辺 */
 
 ctx.beginPath();
 
@@ -279,21 +257,44 @@ ctx.lineWidth=6;
 ctx.strokeStyle="red";
 ctx.stroke();
 
+/* 赤い辺の中点 */
+
+const mx =
+(
+pts[redIndex].x+
+pts[nextIndex].x
+)/2;
+
+const my =
+(
+pts[redIndex].y+
+pts[nextIndex].y
+)/2;
+
+ctx.beginPath();
+ctx.arc(mx,my,5,0,2*Math.PI);
+ctx.fillStyle="red";
+ctx.fill();
+
+/* 情報表示 */
+
 let text="";
 
 if(mode==="inner"){
 
-const side=
-Math.sqrt(
-2-2*Math.cos(
-2*Math.PI/n
-)
-);
+    const side =
+    Math.sqrt(
+    2-
+    2*Math.cos(
+    2*Math.PI/n
+    )
+    );
 
-const lower=
-n*side/2;
+    const lower =
+    n*side/2;
 
-text=`
+    text=
+`
 <h3>内接正${n}角形</h3>
 
 一辺 ≒ ${side.toFixed(5)}
@@ -304,25 +305,34 @@ text=`
 
 <br><br>
 
-赤い辺をどう求める？
+赤い辺の中点は常に最下部
+
+<br><br>
+
+OA=OB=1 を使うと？
 `;
 
 }
 else{
 
-const upper=
-n*Math.tan(
-Math.PI/n
-);
+    const upper =
+    n*Math.tan(
+    Math.PI/n
+    );
 
-text=`
+    text=
+`
 <h3>外接正${n}角形</h3>
 
 π < ${upper.toFixed(5)}
 
 <br><br>
 
-赤い辺をどう求める？
+赤い辺の中点は常に最下部
+
+<br><br>
+
+垂線を下ろすと？
 
 <br><br>
 
