@@ -241,7 +241,7 @@ if(mode==="inner"){
 
     /* 弱吸着 */
 
-    const midAngle =
+const midAngle =
 rot +
 (redIndex+0.5)
 *
@@ -258,14 +258,18 @@ if(
     Math.abs(myUnit)<0.07
 ){
 
-    finalRot =
+    const targetRot =
     -(redIndex+0.5)
     *
     2*Math.PI/n;
 
-}
+    finalRot =
+    0.85*rot
+    +
+    0.15*targetRot;
 
 }
+
 if(mode==="outer"){
 
     document.getElementById("outerButtons")
