@@ -549,10 +549,18 @@ if(mode==="inner"){
 }
 else{
 
+    const side =
+    2*Math.tan(
+        Math.PI/n
+    );
+
     const upper =
     n*Math.tan(
-    Math.PI/n
+        Math.PI/n
     );
+
+    ctx.fillStyle="black";
+    ctx.font="20px sans-serif";
 
     ctx.fillText(
         `外接正${n}角形`,
@@ -564,6 +572,12 @@ else{
         `π < ${upper.toFixed(5)}`,
         20,
         60
+    );
+
+    ctx.fillText(
+        `一辺 ≒ ${side.toFixed(5)}`,
+        20,
+        85
     );
 
 }
