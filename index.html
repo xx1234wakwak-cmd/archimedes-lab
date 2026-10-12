@@ -31,7 +31,7 @@ canvas{
 
 button{
     font-size:18px;
-    margin:5px;
+    margin:5px
     padding:6px 14px;
 }
 
@@ -109,9 +109,51 @@ slider.addEventListener("input",draw);
 
 function draw(){
 
-const rot=
+const rawRot=
 Number(slider.value)
 *Math.PI/180;
+
+let rot=rawRot;
+
+if(mode==="inner"){
+
+    const target=
+    Math.PI/2-Math.PI/n;
+
+    let diff=rot-target;
+
+    while(diff>Math.PI) diff-=2*Math.PI;
+    while(diff<-Math.PI) diff+=2*Math.PI;
+
+    if(Math.abs(diff)<0.2){
+
+        rot=
+        rot*0.7+
+        target*0.3;
+
+    }
+
+}
+else{
+
+    const target=
+    Math.PI/n;
+
+    let diff=rot-target;
+
+    while(diff>Math.PI) diff-=2*Math.PI;
+    while(diff<-Math.PI) diff+=2*Math.PI;
+
+    if(Math.abs(diff)<0.2){
+
+        rot=
+        rot*0.7+
+        target*0.3;
+
+    }
+
+}
+
 
 document.getElementById("nLabel")
 .innerHTML=
