@@ -188,7 +188,8 @@ Math.PI/180;
 
 const rot =
 baseRot+userRot;
-
+let finalRot = rot;
+    
 const pts=[];
 
 let drawR;
@@ -204,11 +205,37 @@ if(mode==="inner"){
 
 }
 
+if(mode==="inner"){
+
+    const bAngle =
+    rot +
+    2*Math.PI*nextIndex/n;
+
+    const bx =
+    Math.cos(bAngle);
+
+    const by =
+    Math.sin(bAngle);
+
+    if(
+        Math.abs(bx-1)<0.05 &&
+        Math.abs(by)<0.05
+    ){
+
+        finalRot =
+        -2*Math.PI*nextIndex/n;
+
+    }
+
+}
+    
+
+    
 for(let i=0;i<n;i++){
 
     const t =
-    rot +
-    2*Math.PI*i/n;
+　　finalRot +
+　　2*Math.PI*i/n;
 
     pts.push({
 
