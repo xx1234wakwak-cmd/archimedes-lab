@@ -49,6 +49,18 @@ button{
 <div class="panel" id="mission"></div>
 <div class="panel">
 
+<div class="panel">
+
+<canvas
+id="cv"
+width="700"
+height="700">
+</canvas>
+
+</div>
+
+<div class="panel">
+
 <button onclick="mode='inner';draw()">
 内接
 </button>
@@ -100,17 +112,7 @@ value="0"
 style="width:300px">
 
 </div>
-
-<div class="panel">
-
-<canvas
-id="cv"
-width="700"
-height="700">
-</canvas>
-
-</div>
-
+    
 <script>
 
 let mode="inner";
@@ -740,9 +742,6 @@ else{
     `;
 
 }
-
-document.getElementById("info")
-.innerHTML=text;
 
 }
 
