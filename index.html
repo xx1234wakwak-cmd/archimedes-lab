@@ -519,7 +519,19 @@ tan が使えそう？
 /***** ミッション表示 *****/
 
 if(mode==="inner"){
-     let mission1;
+
+    const side =
+    Math.sqrt(
+    2-
+    2*Math.cos(
+    2*Math.PI/n
+    )
+    );
+
+    const lower =
+    n*side/2;
+
+    let mission1;
 
     if(lower > 3.05){
 
