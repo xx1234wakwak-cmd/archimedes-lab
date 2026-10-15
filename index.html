@@ -285,7 +285,10 @@ height="700">
 内接
 </button>
 
-<button　id="outerModeButton"　type="button"　onclick="setMode('outer')"
+<button
+id="outerModeButton"
+type="button"
+onclick="setMode('outer')"
 style="display:none">
 外接
 </button>
@@ -457,6 +460,7 @@ function preventMissionSpinnerKeys(event){
 }
 
 function sanitizeMissionAnswer(input){
+
     const digitsOnly=input.value.replace(/[^0-9]/g,"");
 
     if(input.value !== digitsOnly){
@@ -464,38 +468,39 @@ function sanitizeMissionAnswer(input){
     }
 
     updateMissionAnswer(digitsOnly);
-    function updateOuterUnlock(){
 
-const mission1=
-isMissionAnswerCorrect(
-"inner",
-missionAnswers.inner
-);
-
-outerUnlocked=
-mission1
-&& missionChecks.step2
-&& missionChecks.step3
-&& missionChecks.step4;
-
-const outerButton=
-document.getElementById(
-"outerModeButton"
-);
-
-if(outerButton){
-outerButton.style.display=
-outerUnlocked
-?
-"inline-block"
-:
-"none";
-}
-updateOuterUnlock();
-}
 }
 
 function animateDiscoveryBadge(badge){
+function updateOuterUnlock(){
+
+    const mission1=
+    isMissionAnswerCorrect(
+        "inner",
+        missionAnswers.inner
+    );
+
+    outerUnlocked=
+        mission1 &&
+        missionChecks.step2 &&
+        missionChecks.step3 &&
+        missionChecks.step4;
+
+    const outerButton=
+    document.getElementById(
+        "outerModeButton"
+    );
+
+    if(outerButton){
+
+        outerButton.style.display=
+            outerUnlocked
+            ? "inline-block"
+            : "none";
+
+    }
+
+}
     badge.classList.remove("is-animating");
     void badge.offsetWidth;
     badge.classList.add("is-animating");
@@ -521,9 +526,33 @@ function updateMissionAnswer(value){
             discoveryBadge.classList.remove("is-animating");
         }
     }
+    updateOuterUnlock();
 }
 
 function renderMission(){
+if(!isInner){
+
+document.getElementById("mission").innerHTML=`
+<h2>⭐ BONUS CHALLENGE（外接）</h2>
+
+① π ＜ 3.25 を満たす n を探せ
+
+<br><br>
+
+② 赤い辺の長さを求めよう
+
+<br><br>
+
+③ 正${n}角形の周の長さを求めよう
+
+<br><br>
+
+④ π の上限を不等式で表そう
+`;
+
+return;
+
+}    
     const isInner=mode === "inner";
     const missionTitle=isInner
         ? "🎯 MAIN MISSION（内接）"
@@ -608,13 +637,14 @@ id="step4Check">
 `;
 
 }
-``
 
     const input=document.getElementById("mission1Input");
     const check=document.getElementById("mission1Check");
     const discoveryBadge=document.getElementById("discoveryBadge");
     const isCorrect=isMissionAnswerCorrect(mode,missionAnswers[mode]);
-
+if(!input || !check || !discoveryBadge){
+    return;
+}
     input.value=missionAnswers[mode];
     check.checked=isCorrect;
     discoveryBadge.classList.toggle("is-visible",isCorrect);
