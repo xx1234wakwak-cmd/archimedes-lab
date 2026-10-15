@@ -658,16 +658,12 @@ if(!el) return;
 el.checked=
 missionChecks[key];
 
-el.addEventListener(
-"change",
-()=>{
-missionChecks[key]=
-el.checked;
+el.onchange=()=>{
+    missionChecks[key]=el.checked;
 
-updateOuterUnlock();
-renderMission();
-}
-);
+    updateOuterUnlock();
+    renderMission();
+};
 
 });
 if(outerUnlocked){
