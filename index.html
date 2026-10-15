@@ -414,6 +414,10 @@ function updateControls(){
     const outerButtons=document.getElementById("outerButtons");
     const hButton=document.getElementById("hButton");
     const tanButton=document.getElementById("tanButton");
+    outerModeButton.style.display=
+    outerUnlocked
+    ? "inline-block"
+    : "none";
 
     innerModeButton.classList.toggle("is-active", mode === "inner");
     outerModeButton.classList.toggle("is-active", mode === "outer");
@@ -531,7 +535,7 @@ function updateMissionAnswer(value){
 }
 
 function renderMission(){
-　　 const isInner=mode === "inner";
+const isInner=mode === "inner";
 if(!isInner){
 
 document.getElementById("mission").innerHTML=`
