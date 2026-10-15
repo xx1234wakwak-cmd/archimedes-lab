@@ -470,8 +470,6 @@ function sanitizeMissionAnswer(input){
     updateMissionAnswer(digitsOnly);
 
 }
-
-function animateDiscoveryBadge(badge){
 function updateOuterUnlock(){
 
     const mission1=
@@ -501,6 +499,9 @@ function updateOuterUnlock(){
     }
 
 }
+    
+function animateDiscoveryBadge(badge){
+
     badge.classList.remove("is-animating");
     void badge.offsetWidth;
     badge.classList.add("is-animating");
@@ -530,6 +531,7 @@ function updateMissionAnswer(value){
 }
 
 function renderMission(){
+　　 const isInner=mode === "inner";
 if(!isInner){
 
 document.getElementById("mission").innerHTML=`
@@ -553,7 +555,7 @@ document.getElementById("mission").innerHTML=`
 return;
 
 }    
-    const isInner=mode === "inner";
+   
     const missionTitle=isInner
         ? "🎯 MAIN MISSION（内接）"
         : "⭐ BONUS CHALLENGE（外接）";
