@@ -36,6 +36,58 @@ button{
     padding:6px 14px;
 }
 
+button.is-active{
+    background:#2f6fbd;
+    color:white;
+    border-color:#245892;
+}
+
+#outerButtons{
+    display:none;
+}
+
+@media (max-width:600px){
+    body{
+        padding:8px;
+    }
+
+    h1{
+        font-size:28px;
+        margin:12px 0;
+    }
+
+    .panel{
+        margin:8px auto;
+        padding:8px;
+    }
+
+    button{
+        min-height:44px;
+        margin:4px;
+        padding:8px 12px;
+        font-size:16px;
+    }
+
+    #mission{
+        font-size:18px;
+    }
+
+    #mission h2{
+        font-size:27px;
+    }
+
+    #rotSlider{
+        width:min(300px, 78vw) !important;
+        min-height:32px;
+        vertical-align:middle;
+    }
+
+    canvas{
+        width:100%;
+        height:auto;
+    }
+}
+
 #mission{
     background:#fff8d6;
     font-size:24px;
@@ -46,15 +98,176 @@ button{
     margin:0;
 }
 
+.mission-one{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.mission-check{
+    width:22px;
+    height:22px;
+    margin:0;
+    accent-color:#18a84a;
+    opacity:1;
+    pointer-events:none;
+}
+
+.mission-answer{
+    width:90px;
+    font:inherit;
+    text-align:center;
+    padding:3px 6px;
+    box-sizing:border-box;
+}
+
+.mission-n{
+    white-space:nowrap;
+}
+
+.discovery-badge{
+    display:none;
+    align-items:center;
+    padding:4px 10px;
+    border-radius:999px;
+    background:#18a84a;
+    color:white;
+    font-size:0.82em;
+    font-weight:700;
+    line-height:1.2;
+    white-space:nowrap;
+    box-shadow:0 2px 5px rgba(24,168,74,0.28);
+    transform-origin:center;
+}
+
+.discovery-badge.is-visible{
+    display:inline-flex;
+}
+
+.discovery-badge.is-animating{
+    animation:discovery-pop 420ms ease-out;
+}
+
+@keyframes discovery-pop{
+    0%{
+        transform:scale(0.72);
+        opacity:0;
+    }
+    55%{
+        transform:scale(1.14);
+        opacity:1;
+    }
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+    .discovery-badge.is-animating{
+        animation:none;
+    }
+}
+
+/* PC・横向きタブレット：ミッションとグラフを左右配置 */
+.main-layout{
+    display:grid;
+    grid-template-columns:minmax(0, 2fr) minmax(0, 3fr);
+    align-items:stretch;
+    gap:16px;
+    width:100%;
+    max-width:1200px;
+    margin:10px auto;
+}
+
+.main-layout > .panel{
+    width:auto;
+    max-width:none;
+    margin:0;
+    box-sizing:border-box;
+}
+
+#mission{
+    align-self:stretch;
+}
+
+.graph-panel{
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+}
+
+.graph-panel canvas{
+    display:block;
+    width:100%;
+    max-width:700px;
+    height:auto;
+}
+
+/* スマートフォン・縦向きタブレット：従来の縦配置 */
+@media (max-width:900px){
+    .main-layout{
+        display:block;
+        max-width:900px;
+        margin:0 auto;
+    }
+
+    .main-layout > .panel{
+        width:auto;
+        max-width:900px;
+        margin:10px auto;
+    }
+
+    #mission{
+        min-height:0;
+    }
+
+    .graph-panel{
+        display:block;
+        text-align:center;
+    }
+
+    .graph-panel canvas{
+        width:auto;
+        max-width:100%;
+        height:auto;
+        margin:0 auto;
+    }
+}
+
+@media (max-width:600px){
+    .main-layout > .panel{
+        margin:8px auto;
+        padding:8px;
+    }
+
+    #mission{
+        font-size:18px;
+    }
+
+    #mission h2{
+        font-size:27px;
+    }
+
+    .graph-panel canvas{
+        width:100%;
+    }
+}
+
 </style>
 
 </head>
 <body>
 
 <h1>Archimedes Lab</h1>
+
+<div class="main-layout">
+
 <div class="panel" id="mission"></div>
 
-<div class="panel">
+<div class="panel graph-panel">
 
 <canvas
 id="cv"
@@ -64,31 +277,35 @@ height="700">
 
 </div>
 
+</div>
+
 <div class="panel">
 
-<button onclick="mode='inner';draw()">
+<button id="innerModeButton" type="button" onclick="setMode('inner')">
 内接
 </button>
 
-<button onclick="mode='outer';draw()">
+<button id="outerModeButton" type="button" onclick="setMode('outer')">
 外接
 </button>
 
-<button onclick="
-showTriangles=!showTriangles;
-draw();
-">
+<button id="trianglesButton" type="button" onclick="toggleTriangles()">
 三角形を見る
 </button>
 
-<button onclick="
-showCenterAngle=!showCenterAngle;
-draw();
-">
+<button id="centerAngleButton" type="button" onclick="toggleCenterAngle()">
 中心角を見る
 </button>
 
-<div id="outerButtons"></div>
+<div id="outerButtons">
+<button id="hButton" type="button" onclick="toggleH()">
+Hを見る
+</button>
+
+<button id="tanButton" type="button" onclick="toggleTan()">
+AHの長さは？
+</button>
+</div>
 
 </div>
 
@@ -119,7 +336,7 @@ value="0"
 style="width:300px">
 
 </div>
-    
+ 
 <script>
 
 let mode="inner";
@@ -129,6 +346,11 @@ let showCenterAngle=false;
 
 let showH=false;
 let showTan=false;
+
+const missionAnswers={
+    inner:"",
+    outer:""
+};
 
 const canvas=
 document.getElementById("cv");
@@ -141,7 +363,198 @@ document.getElementById("rotSlider");
 
 slider.addEventListener("input",draw);
 
+function setMode(nextMode){
+    if(mode === "outer" && nextMode !== "outer"){
+        showH=false;
+        showTan=false;
+    }
+    mode=nextMode;
+    draw();
+}
+
+function toggleTriangles(){
+    showTriangles=!showTriangles;
+    draw();
+}
+
+function toggleCenterAngle(){
+    showCenterAngle=!showCenterAngle;
+    draw();
+}
+
+function toggleH(){
+    showH=!showH;
+    if(!showH){
+        showTan=false;
+    }
+    draw();
+}
+
+function toggleTan(){
+    showTan=!showTan;
+    draw();
+}
+
+function updateControls(){
+    const innerModeButton=document.getElementById("innerModeButton");
+    const outerModeButton=document.getElementById("outerModeButton");
+    const trianglesButton=document.getElementById("trianglesButton");
+    const centerAngleButton=document.getElementById("centerAngleButton");
+    const outerButtons=document.getElementById("outerButtons");
+    const hButton=document.getElementById("hButton");
+    const tanButton=document.getElementById("tanButton");
+
+    innerModeButton.classList.toggle("is-active", mode === "inner");
+    outerModeButton.classList.toggle("is-active", mode === "outer");
+    innerModeButton.setAttribute("aria-pressed", String(mode === "inner"));
+    outerModeButton.setAttribute("aria-pressed", String(mode === "outer"));
+
+    trianglesButton.classList.toggle("is-active", showTriangles);
+    trianglesButton.textContent=showTriangles ? "三角形を隠す" : "三角形を見る";
+    trianglesButton.setAttribute("aria-pressed", String(showTriangles));
+
+    centerAngleButton.classList.toggle("is-active", showCenterAngle);
+    centerAngleButton.textContent=showCenterAngle ? "中心角を隠す" : "中心角を見る";
+    centerAngleButton.setAttribute("aria-pressed", String(showCenterAngle));
+
+    outerButtons.style.display=mode === "outer" ? "block" : "none";
+
+    hButton.classList.toggle("is-active", showH);
+    hButton.textContent=showH ? "Hを隠す" : "Hを見る";
+    hButton.setAttribute("aria-pressed", String(showH));
+
+    tanButton.style.display=showH ? "inline-block" : "none";
+    tanButton.classList.toggle("is-active", showTan);
+    tanButton.textContent=showTan ? "AHの長さを隠す" : "AHの長さは？";
+    tanButton.setAttribute("aria-pressed", String(showTan));
+}
+
+function isMissionAnswerCorrect(targetMode,value){
+    if(value === ""){
+        return false;
+    }
+
+    const numericValue=Number(value);
+    const isInteger=Number.isInteger(numericValue);
+    const isPolygonSideCount=numericValue>=3;
+    const threshold=targetMode === "inner" ? 8 : 10;
+
+    return isInteger && isPolygonSideCount && numericValue>=threshold;
+}
+
+function preventMissionSpinnerKeys(event){
+    if(event.key === "ArrowUp" || event.key === "ArrowDown"){
+        event.preventDefault();
+    }
+}
+
+function sanitizeMissionAnswer(input){
+    const digitsOnly=input.value.replace(/[^0-9]/g,"");
+
+    if(input.value !== digitsOnly){
+        input.value=digitsOnly;
+    }
+
+    updateMissionAnswer(digitsOnly);
+}
+
+function animateDiscoveryBadge(badge){
+    badge.classList.remove("is-animating");
+    void badge.offsetWidth;
+    badge.classList.add("is-animating");
+}
+
+function updateMissionAnswer(value){
+    missionAnswers[mode]=value;
+
+    const isCorrect=isMissionAnswerCorrect(mode,value);
+    const missionCheck=document.getElementById("mission1Check");
+    const discoveryBadge=document.getElementById("discoveryBadge");
+
+    if(missionCheck){
+        missionCheck.checked=isCorrect;
+    }
+
+    if(discoveryBadge){
+        discoveryBadge.classList.toggle("is-visible",isCorrect);
+
+        if(isCorrect){
+            animateDiscoveryBadge(discoveryBadge);
+        }else{
+            discoveryBadge.classList.remove("is-animating");
+        }
+    }
+}
+
+function renderMission(){
+    const isInner=mode === "inner";
+    const missionTitle=isInner
+        ? "🎯 MAIN MISSION（内接）"
+        : "⭐ BONUS CHALLENGE（外接）";
+    const missionText=isInner
+        ? "① 3.05 ＜ π を満たす n の値を探せ"
+        : "① π ＜ 3.25 を満たす n の値を探せ";
+    const lastMission=isInner
+        ? "□ ④ 円周率 π の下限を不等式で表そう"
+        : "□ ④ 円周率 π の上限を不等式で表そう";
+
+    document.getElementById("mission").innerHTML=`
+        <h2>${missionTitle}</h2>
+
+        <div class="mission-one">
+            <input
+                id="mission1Check"
+                class="mission-check"
+                type="checkbox"
+                tabindex="-1"
+                aria-label="ミッション1達成状況">
+            <span>${missionText}</span>
+            <label class="mission-n">
+                n＝
+                <input
+                    id="mission1Input"
+                    class="mission-answer"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    autocomplete="off"
+                    aria-label="ミッション1のnの値"
+                    onkeydown="preventMissionSpinnerKeys(event)"
+                    oninput="sanitizeMissionAnswer(this)">
+            </label>
+            <span
+                id="discoveryBadge"
+                class="discovery-badge"
+                aria-live="polite">
+                ✓ 発見！
+            </span>
+        </div>
+
+        <br>
+
+        □ ② 赤い辺の長さを求めよう
+
+        <br><br>
+
+        □ ③ 正${n}角形の周の長さを求めよう
+
+        <br><br>
+
+        ${lastMission}
+    `;
+
+    const input=document.getElementById("mission1Input");
+    const check=document.getElementById("mission1Check");
+    const discoveryBadge=document.getElementById("discoveryBadge");
+    const isCorrect=isMissionAnswerCorrect(mode,missionAnswers[mode]);
+
+    input.value=missionAnswers[mode];
+    check.checked=isCorrect;
+    discoveryBadge.classList.toggle("is-visible",isCorrect);
+}
+
 function draw(){
+updateControls();
 
 document.getElementById("nLabel")
 .innerHTML=
@@ -151,7 +564,17 @@ ctx.clearRect(0,0,700,700);
 
 const cx=350;
 const cy=350;
-const R=230;
+
+/*
+ * 外接多角形がCanvas外へはみ出さないように自動倍率調整する。
+ * 通常は円の半径230pxを維持し、外接多角形の頂点半径が300pxを
+ * 超える場合だけ、円と多角形を相似のまま一体で縮小する。
+ */
+const baseR=230;
+const maxOuterVertexR=300;
+const R = mode === "outer"
+    ? Math.min(baseR, maxOuterVertexR * Math.cos(Math.PI / n))
+    : baseR;
 
 ctx.strokeStyle="#ddd";
 
@@ -199,7 +622,7 @@ Math.PI/180;
 const rot =
 baseRot+userRot;
 let finalRot = rot;
-    
+ 
 const pts=[];
 
 let drawR;
@@ -268,43 +691,6 @@ if(
 
 if(mode==="outer"){
 
-    document.getElementById("outerButtons")
-    .innerHTML=
-    `
-    <button onclick="
-    showH=!showH;
-    draw();
-    ">
-    Hを見る
-    </button>
-
-    ${
-        showH
-        ?
-        `
-        <button onclick="
-        showTan=!showTan;
-        draw();
-        ">
-        AHの長さは？
-        </button>
-        `
-        :
-        ""
-    }
-    `;
-
-}
-else{
-
-    document.getElementById("outerButtons")
-    .innerHTML="";
-
-}
-``    
-    
-if(mode==="outer"){
-
     const midAngle =
     rot +
     (
@@ -332,12 +718,12 @@ if(mode==="outer"){
     }
 
 }
-    
+ 
 for(let i=0;i<n;i++){
 
     const t =
-　　finalRot +
-　　2*Math.PI*i/n;
+  finalRot +
+  2*Math.PI*i/n;
 
     pts.push({
 
@@ -538,7 +924,7 @@ if(
     );
 
 }
-    
+ 
 ctx.beginPath();
 ctx.arc(mx,my,5,0,2*Math.PI);
 ctx.fillStyle="red";
@@ -642,179 +1028,96 @@ ctx.fillText(
 );
 
 }
-    
+ 
+/* 多角形の周の長さと単位円の円周を比較 */
+
+const unitSide = mode === "inner"
+    ? 2*Math.sin(Math.PI/n)
+    : 2*Math.tan(Math.PI/n);
+
+const polygonPerimeter = n*unitSide;
+
+const formatPerimeter = value =>
+    Number(value.toFixed(5)).toString();
+
+const polygonColor =
+    mode === "inner"
+    ? "blue"
+    : "purple";
+
+const comparisonParts = [
+    {
+        text:"多角形の周の長さ → ",
+        color:polygonColor
+    },
+    {
+        text:formatPerimeter(polygonPerimeter),
+        color:polygonColor
+    },
+    {
+        text:mode === "inner" ? " ＜ " : " ＞ ",
+        color:"red"
+    },
+    {
+        text:"2π ← 円周",
+        color:"black"
+    }
+];
+
 /* 図の中に情報表示 */
 
+ctx.save();
+ctx.font="20px sans-serif";
+
+const comparisonWidth =
+    comparisonParts.reduce(
+        (sum,part) => sum+ctx.measureText(part.text).width,
+        0
+    );
+
+const infoBoxWidth =
+    Math.max(260, Math.ceil(comparisonWidth)+20);
+
 ctx.fillStyle="rgba(255,255,255,0.85)";
-ctx.fillRect(10,10,260,95);
+ctx.fillRect(10,10,infoBoxWidth,95);
 
 ctx.strokeStyle="#ccc";
-ctx.strokeRect(10,10,260,95);
+ctx.strokeRect(10,10,infoBoxWidth,95);
 
 ctx.fillStyle="black";
 ctx.font="20px sans-serif";
 
-if(mode==="inner"){
+ctx.fillText(
+    mode === "inner"
+    ? `内接正${n}角形`
+    : `外接正${n}角形`,
+    20,
+    35
+);
 
-    const side =
-    Math.sqrt(
-    2-
-    2*Math.cos(
-    2*Math.PI/n
-    )
-    );
-
-    const lower =
-    n*side/2;
-
+let comparisonX = 20;
+comparisonParts.forEach(part => {
+    ctx.fillStyle=part.color;
     ctx.fillText(
-        `内接正${n}角形`,
-        20,
-        35
-    );
-
-    ctx.fillText(
-        `${lower.toFixed(5)} < π` ,
-        20,
+        part.text,
+        comparisonX,
         60
     );
+    comparisonX+=ctx.measureText(part.text).width;
+});
 
-    ctx.fillText(
-        `一辺 ≒ ${side.toFixed(5)}`,
-        20,
-        85
-    );
+ctx.fillStyle="black";
+ctx.fillText(
+    `一辺 ≒ ${unitSide.toFixed(5)}`,
+    20,
+    85
+);
 
-}
-else{
-
-    const side =
-    2*Math.tan(
-        Math.PI/n
-    );
-
-    const upper =
-    n*Math.tan(
-        Math.PI/n
-    );
-
-    ctx.fillStyle="black";
-    ctx.font="20px sans-serif";
-
-    ctx.fillText(
-        `外接正${n}角形`,
-        20,
-        35
-    );
-
-    ctx.fillText(
-        `π < ${upper.toFixed(5)}`,
-        20,
-        60
-    );
-
-    ctx.fillText(
-        `一辺 ≒ ${side.toFixed(5)}`,
-        20,
-        85
-    );
-
-}
+ctx.restore();
 
 /***** ミッション表示 *****/
 
-if(mode==="inner"){
-
-    const side =
-    Math.sqrt(
-    2-
-    2*Math.cos(
-    2*Math.PI/n
-    )
-    );
-
-    const lower =
-    n*side/2;
-
-    let mission1;
-
-    if(lower > 3.05){
-
-        mission1 =
-        "✅ ① 3.05 < π を満たす n を発見！";
-
-    }
-    else{
-
-        mission1 =
-        "□ ① 3.05 < π を満たす n の値を探せ";
-
-    }
-
-    document.getElementById("mission")
-    .innerHTML=
-    `
-    <h2>🎯 MAIN MISSION（内接）</h2>
-
-    ${mission1}
-    
-    <br><br>
-
-    □ ② 赤い辺の長さを求めよう
-
-    <br><br>
-
-    □ ③ 正${n}角形の周の長さを求めよう
-
-    <br><br>
-
-    □ ④ 円周率 π の下限を不等式で表そう
-    `;
-
-}
-else{
-
-    const upper =
-    n*Math.tan(
-    Math.PI/n
-    );
-
-    let mission1;
-
-    if(upper < 3.25){
-
-        mission1 =
-        `✅ ① π < 3.25 を満たす n=${n} を発見！`;
-
-    }else{
-
-        mission1 =
-        "□ ① π < 3.25 を満たす n の値を探せ";
-
-    }
-
-    document.getElementById("mission")
-    .innerHTML=
-    `
-    <h2>⭐ BONUS CHALLENGE（外接）</h2>
-
-    ${mission1}
-
-    <br><br>
-
-    □ ② 赤い辺の長さを求めよう
-
-    <br><br>
-
-    □ ③ 正${n}角形の周の長さを求めよう
-
-    <br><br>
-
-    □ ④ 円周率 π の上限を不等式で表そう
-    `;
-
-}
-
+renderMission();
 }
 
 draw();
