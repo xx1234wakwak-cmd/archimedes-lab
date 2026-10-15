@@ -285,7 +285,8 @@ height="700">
 内接
 </button>
 
-<button id="outerModeButton" type="button" onclick="setMode('outer')">
+<button　id="outerModeButton"　type="button"　onclick="setMode('outer')"
+style="display:none">
 外接
 </button>
 
@@ -351,6 +352,13 @@ const missionAnswers={
     inner:"",
     outer:""
 };
+const missionChecks={
+step2:false,
+step3:false,
+step4:false
+};
+
+let outerUnlocked=false;
 
 const canvas=
 document.getElementById("cv");
@@ -456,6 +464,35 @@ function sanitizeMissionAnswer(input){
     }
 
     updateMissionAnswer(digitsOnly);
+    function updateOuterUnlock(){
+
+const mission1=
+isMissionAnswerCorrect(
+"inner",
+missionAnswers.inner
+);
+
+outerUnlocked=
+mission1
+&& missionChecks.step2
+&& missionChecks.step3
+&& missionChecks.step4;
+
+const outerButton=
+document.getElementById(
+"outerModeButton"
+);
+
+if(outerButton){
+outerButton.style.display=
+outerUnlocked
+?
+"inline-block"
+:
+"none";
+}
+updateOuterUnlock();
+}
 }
 
 function animateDiscoveryBadge(badge){
@@ -498,50 +535,80 @@ function renderMission(){
         ? "□ ④ 円周率 π の下限を不等式で表そう"
         : "□ ④ 円周率 π の上限を不等式で表そう";
 
-    document.getElementById("mission").innerHTML=`
-        <h2>${missionTitle}</h2>
+if(isInner){
 
-        <div class="mission-one">
-            <input
-                id="mission1Check"
-                class="mission-check"
-                type="checkbox"
-                tabindex="-1"
-                aria-label="ミッション1達成状況">
-            <span>${missionText}</span>
-            <label class="mission-n">
-                n＝
-                <input
-                    id="mission1Input"
-                    class="mission-answer"
-                    type="text"
-                    inputmode="numeric"
-                    pattern="[0-9]*"
-                    autocomplete="off"
-                    aria-label="ミッション1のnの値"
-                    onkeydown="preventMissionSpinnerKeys(event)"
-                    oninput="sanitizeMissionAnswer(this)">
-            </label>
-            <span
-                id="discoveryBadge"
-                class="discovery-badge"
-                aria-live="polite">
-                ✓ 発見！
-            </span>
-        </div>
+const mission1=
+isMissionAnswerCorrect(
+"inner",
+missionAnswers.inner
+);
 
-        <br>
+document.getElementById("mission").innerHTML=
+`
+<h2>🎯 MAIN MISSION（内接）</h2>
 
-        □ ② 赤い辺の長さを求めよう
+<div class="mission-one">
+<input
+id="mission1Check"
+class="mission-check"
+type="checkbox"
+${mission1 ? "checked" : ""}
+disabled>
 
-        <br><br>
+<span>
+① 3.05＜π を満たす n を探せ
+</span>
 
-        □ ③ 正${n}角形の周の長さを求めよう
+<label class="mission-n">
+n＝
+<input
+id="mission1Input"
+class="mission-answer"
+type="text"
+inputmode="numeric"
+oninput="sanitizeMissionAnswer(this)">
+</label>
 
-        <br><br>
+<span
+id="discoveryBadge"
+class="discovery-badge
+${mission1 ? "is-visible" : ""}">
+✓ 発見！
+</span>
+</div>
 
-        ${lastMission}
-    `;
+<br>
+
+<label>
+<input
+type="checkbox"
+id="step2Check">
+② 赤い辺の長さを求めた
+</label>
+
+<br><br>
+
+<label>
+<input
+type="checkbox"
+id="step3Check">
+③ 正${n}角形の周の長さを求めた
+</label>
+
+<br><br>
+
+<label>
+<input
+type="checkbox"
+id="step4Check">
+④ πの下限を不等式で表した
+</label>
+
+<div id="unlockMessage"></div>
+`;
+
+}
+``
 
     const input=document.getElementById("mission1Input");
     const check=document.getElementById("mission1Check");
@@ -551,6 +618,51 @@ function renderMission(){
     input.value=missionAnswers[mode];
     check.checked=isCorrect;
     discoveryBadge.classList.toggle("is-visible",isCorrect);
+    ["step2","step3","step4"]
+.forEach((key,index)=>{
+
+const el=
+document.getElementById(
+`step${index+2}Check`
+);
+
+if(!el) return;
+
+el.checked=
+missionChecks[key];
+
+el.addEventListener(
+"change",
+()=>{
+missionChecks[key]=
+el.checked;
+
+updateOuterUnlock();
+renderMission();
+}
+);
+
+});
+if(outerUnlocked){
+
+const msg=
+document.getElementById(
+"unlockMessage"
+);
+
+msg.innerHTML=
+`
+<br>
+<div style="
+color:#18a84a;
+font-weight:bold;
+font-size:28px;">
+🎉 MAIN MISSION CLEAR!
+<br>
+⭐ BONUS CHALLENGE 解放！
+</div>
+`;
+}    
 }
 
 function draw(){
